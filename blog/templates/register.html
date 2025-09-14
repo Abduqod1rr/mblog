@@ -1,0 +1,215 @@
+{# templates/register.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ro'yxatdan o'tish — The Codehood</title>
+  <style>
+    /* Yashil, silliq va minimal */
+    :root{
+      --bg1: #e6f7ef;
+      --bg2: #dff6e9;
+      --panel: #ffffff;
+      --accent: #1fa66a; /* primary green */
+      --accent-dark: #157a4f;
+      --muted: #6b7280;
+      --danger: #e45454;
+      --radius: 12px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2) 60%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      background:var(--panel);
+      border-radius:var(--radius);
+      box-shadow: 0 8px 30px rgba(16,24,40,0.08);
+      padding:28px;
+      box-sizing:border-box;
+      border: 1px solid rgba(21,122,79,0.06);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:18px;
+      box-shadow: 0 6px 18px rgba(31,166,106,0.18);
+    }
+    h1{
+      margin:0;
+      font-size:20px;
+      color:#052e1f;
+    }
+    p.lead{
+      margin:8px 0 20px 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    form{display:block;}
+    .field{
+      margin-bottom:12px;
+    }
+    label{
+      display:block;
+      font-size:13px;
+      color:#0b3f2a;
+      margin-bottom:6px;
+      font-weight:600;
+    }
+    input[type="text"],
+    input[type="password"]{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(10,60,30,0.08);
+      box-sizing:border-box;
+      font-size:14px;
+      background: #fbfffb;
+      transition: box-shadow .12s, border-color .12s;
+    }
+    input:focus{
+      outline:none;
+      border-color: rgba(21,122,79,0.9);
+      box-shadow: 0 6px 18px rgba(31,166,106,0.08);
+    }
+
+    .errors{
+      margin-top:6px;
+      color: var(--danger);
+      font-size:13px;
+    }
+    .non-field-errors{
+      background: #fff6f6;
+      border: 1px solid rgba(228,84,84,0.12);
+      padding:8px 10px;
+      border-radius:8px;
+      color:var(--danger);
+      margin-bottom:12px;
+      font-size:13px;
+    }
+
+    .btn{
+      display:inline-block;
+      width:100%;
+      padding:11px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+      color:white;
+      font-weight:700;
+      font-size:15px;
+      border:0;
+      cursor:pointer;
+      box-shadow: 0 8px 22px rgba(31,166,106,0.14);
+    }
+    .btn:active{transform:translateY(1px);}
+
+    .muted-line{
+      margin-top:14px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .muted-line a{
+      color:var(--accent-dark);
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    /* small screens */
+    @media (max-width:420px){
+      body{ padding:18px; }
+      .card{ padding:18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="signup-title">
+    <div class="brand">
+      <div class="logo">OG</div>
+      <div>
+        <h1 id="signup-title">Ro'yxatdan o'tish</h1>
+        <p class="lead">Kirish uchun username va parolni kiriting. Keling — kod yozib, dunyoni o‘zgartiramiz 🌱</p>
+      </div>
+    </div>
+
+    {# Django messages (agar ishlatayotgan bo'lsang) #}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="non-field-errors" role="status">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {# form.non_field_errors uchun alohida blok #}
+    {% if form.non_field_errors %}
+      <div class="non-field-errors">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {# Agar form fieldlarini qo'lda render qilishni istasak: #}
+      <div class="field">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <div class="errors">{{ form.username.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.password1.id_for_label }}">Parol</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+          <div class="errors">{{ form.password1.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.password2.id_for_label }}">Parolni tasdiqlash</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+          <div class="errors">{{ form.password2.errors|striptags }}</div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn">Ro'yxatdan o'tish</button>
+    </form>
+
+    <div class="muted-line">
+      Allaqachon a'zo bo'lsang — <a href="{% url 'login' %}">Kirish</a> | <a href="{% url 'home' %}">Bosh sahifa</a>
+    </div>
+  </main>
+
+  {# Qo'shimcha: agar Django form widgets default style bilan chiqsa, input elementlariga qo'shimcha sinf berish uchun
+     projektingda forms.py da widget attributelarini sozlashni ko'rib chiq. #}
+</body>
+</html>

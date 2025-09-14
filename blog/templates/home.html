@@ -1,22 +1,81 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
 
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
-    </head>
-    <body>
-         <h1>All Blog Posts</h1>
-            <ul>
-              {% for post in post %}
-                <li>
-                  <a>{{ post.title }}</a>
-                  <pre>
-                  <a>{{post.text}}</a>
-                </li>
-              {% endfor %}
-            </ul>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+    }
 
-    </body>
-    </html>
+    h1 {
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      background: #4CAF50;
+      color: white;
+      font-size: 2rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 800px;
+      margin: 30px auto;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 15px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    li:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    a:first-child {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #4CAF50;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    pre {
+      margin: 0;
+      font-family: inherit;
+      white-space: pre-wrap; /* uzun textni avtomatik qatorga bo‘ladi */
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>All Blog Posts</h1>
+  <ul>
+    {% for post in post %}
+      <li>
+        <a>{{ post.title }}</a>
+        <pre>{{ post.text }}</pre>
+      </li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>
