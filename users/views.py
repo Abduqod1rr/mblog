@@ -18,5 +18,9 @@ class RegisterUseview(FormView):
 class LoginUserView(LoginView):
     template_name='login.html'
     redirect_authenticated_user=True
+
     def get_success_url(self) -> str:
         return self.get_redirect_url() or reverse_lazy('home')
+    
+class LogoutUserVIew(LogoutView):
+    next_page='login'
