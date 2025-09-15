@@ -95,27 +95,29 @@
         <pre>{{ post.text }}</pre>
 
         <!-- Comments -->
-        <div class="comment-box">
-          <h4>Comments:</h4>
+             <div class="comment-box">
+        <h4>Comments:</h4>
+        {% if post.comment_set.exists %}
           {% for comment in post.comment_set.all %}
-            <p class="{% if forloop.counter > 3 %}hidden-comment{% endif %}">
+                  <p class="{% if forloop.counter > 3 %}hidden-comment{% endif %}">
               <strong>{{ comment.user }}:</strong> {{ comment.comment }}
               {% if user.is_authenticated and comment.user == user %}
-                <!-- Delete faqat o'z commenti uchun -->
+                <!-- Faqat o‘z commentini o‘chirish -->
                 <form action="{% url 'delete_comment' comment.pk %}" method="post" style="display:inline;">
                   {% csrf_token %}
                   <button type="submit" class="delete-btn">Delete</button>
                 </form>
               {% endif %}
             </p>
-          {% empty %}
-            <p>No comments yet.</p>
           {% endfor %}
-
+      
           {% if post.comment_set.count > 3 %}
             <button class="show-more" onclick="toggleComments(this)">Show more</button>
           {% endif %}
-        </div>
+        {% else %}
+                <p>No comments yet.</p>
+        {% endif %}
+      </div>
 
         <!-- Comment Form -->
         {% if user.is_authenticated %}
