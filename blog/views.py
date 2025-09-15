@@ -2,8 +2,9 @@ from django.forms import BaseModelForm
 from django.shortcuts import render ,HttpResponse,redirect
 from .models import Post ,Comment
 from django.views.generic import DeleteView,ListView ,CreateView 
-from django.contrib.auth.mixins import LoginRequiredMixin 
+from django.contrib.auth.mixins import LoginRequiredMixin ,UserPassesTestMixin
 from django.urls import reverse_lazy
+from typing import cast
 
 class Homeview(ListView):
     model=Post
@@ -21,5 +22,11 @@ class AddCommentView(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
         
  
+class DeleteCommentView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
+    model=Comment
+    success_url=reverse_lazy('home')
 
+    def test_func(self) :
+        obj=cast(Comment,self.get_object())
+        return obj.user==self.request.user
 
