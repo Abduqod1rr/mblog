@@ -58,18 +58,26 @@
       resize: vertical;
     }
 
-    button {
+    button, .delete-btn {
       background: #4CAF50;
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 5px;
-      margin-top: 8px;
+      margin-top: 5px;
       cursor: pointer;
+      font-size: 0.9rem;
     }
 
-    button:hover {
+    button:hover, .delete-btn:hover {
       background: #45a049;
+    }
+
+    .delete-btn {
+      background: crimson;
+    }
+    .delete-btn:hover {
+      background: darkred;
     }
   </style>
 </head>
@@ -86,7 +94,16 @@
         <div class="comment-box">
           <h4>Comments:</h4>
           {% for comment in post.comment_set.all %}
-            <p><strong>{{ comment.user }}:</strong> {{ comment.comment }}</p>
+            <p>
+              <strong>{{ comment.user }}:</strong> {{ comment.comment }}
+              {% if user.is_authenticated and comment.user == user %}
+                <!-- Delete faqat o'z commenti uchun -->
+                <form action="{% url 'delete_comment' comment.pk %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="delete-btn">Delete</button>
+                </form>
+              {% endif %}
+            </p>
           {% empty %}
             <p>No comments yet.</p>
           {% endfor %}
