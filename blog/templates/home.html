@@ -58,7 +58,7 @@
       resize: vertical;
     }
 
-    button, .delete-btn {
+    button, .delete-btn, .show-more {
       background: #4CAF50;
       color: white;
       border: none;
@@ -69,7 +69,7 @@
       font-size: 0.9rem;
     }
 
-    button:hover, .delete-btn:hover {
+    button:hover, .show-more:hover {
       background: #45a049;
     }
 
@@ -78,6 +78,10 @@
     }
     .delete-btn:hover {
       background: darkred;
+    }
+
+    .hidden-comment {
+      display: none;
     }
   </style>
 </head>
@@ -94,7 +98,7 @@
         <div class="comment-box">
           <h4>Comments:</h4>
           {% for comment in post.comment_set.all %}
-            <p>
+            <p class="{% if forloop.counter > 3 %}hidden-comment{% endif %}">
               <strong>{{ comment.user }}:</strong> {{ comment.comment }}
               {% if user.is_authenticated and comment.user == user %}
                 <!-- Delete faqat o'z commenti uchun -->
@@ -107,6 +111,10 @@
           {% empty %}
             <p>No comments yet.</p>
           {% endfor %}
+
+          {% if post.comment_set.count > 3 %}
+            <button class="show-more" onclick="toggleComments(this)">Show more</button>
+          {% endif %}
         </div>
 
         <!-- Comment Form -->
@@ -122,6 +130,14 @@
       </li>
     {% endfor %}
   </ul>
+
+  <script>
+    function toggleComments(button) {
+      const hiddenComments = button.parentElement.querySelectorAll(".hidden-comment");
+      hiddenComments.forEach(c => c.style.display = "block");
+      button.style.display = "none"; // Tugma yo'qoladi
+    }
+  </script>
 
 </body>
 </html>
