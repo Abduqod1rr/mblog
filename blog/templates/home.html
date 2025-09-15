@@ -122,10 +122,11 @@
         <!-- Comment Form -->
         {% if user.is_authenticated %}
           <form class="comment-form" action="{% url 'add_comment' post.pk %}" method="post">
-            {% csrf_token %}
-            <textarea name="comment" rows="2" placeholder="Write a comment..."></textarea>
-            <button type="submit">Add Comment</button>
+               {% csrf_token %}
+                      <textarea name="comment" rows="2" placeholder="Write a comment..." required></textarea>
+                    <button type="submit">Add Comment</button>
           </form>
+
         {% else %}
           <p><a href="{% url 'login' %}">Login</a> to comment</p>
         {% endif %}
