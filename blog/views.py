@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.shortcuts import render ,HttpResponse,redirect
 from .models import Post ,Comment
@@ -10,6 +11,12 @@ class Homeview(ListView):
     model=Post
     template_name='home.html'
     context_object_name='post'
+
+    def get_queryset(self) :
+        query=self.request.GET.get('q')
+        if query:
+            return Post.objects.filter(title__icontains=query) | Post.objects.filter(text__icontains=query)
+        return Post.objects.all()
 
 class AddCommentView(LoginRequiredMixin,CreateView):
     model=Comment

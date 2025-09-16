@@ -86,14 +86,17 @@
   </style>
 </head>
 <body>
-
+           <form method="get" action="">
+               <input type="text" name="q" placeholder="Search..." value="{{ request.GET.q }}">
+                <button type="submit">Search</button>
+           </form>
   <h1>All Blog Posts</h1>
   <ul>
     {% for post in post %}
       <li>
         <a>{{ post.title }}</a>
         <pre>{{ post.text }}</pre>
-
+          
         <!-- Comments -->
              <div class="comment-box">
         <h4>Comments:</h4>
@@ -118,6 +121,9 @@
                 <p>No comments yet.</p>
         {% endif %}
       </div>
+      <h1>All Blog Posts</h1>
+
+
 
         <!-- Comment Form -->
         {% if user.is_authenticated %}
